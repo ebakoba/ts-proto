@@ -11,6 +11,7 @@ import {
   isEnum,
   isLong,
   isLongValueType,
+  isBytesValueType,
   isMapType,
   isMessage,
   isPrimitive,
@@ -911,6 +912,8 @@ function generateFromJson(
         const valueType = valueTypeName(field.typeName, options)!;
         if (isLongValueType(field)) {
           return CodeBlock.of('%L.fromValue(%L)', capitalize(valueType.toString()), from);
+        } else if (isBytesValueType(field)) {
+          return CodeBlock.of('new %L(%L)', capitalize(valueType.toString()), from);
         } else {
           return CodeBlock.of('%L(%L)', capitalize(valueType.toString()), from);
         }
@@ -972,7 +975,8 @@ function generateFromJson(
         fieldName,
         readSnippet(`object.${fieldName}`)
       );
-    } else {
+    } 
+    else {
       func = func.addStatement(`message.%L = %L`, fieldName, readSnippet(`object.${fieldName}`));
     }
 
