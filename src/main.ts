@@ -975,8 +975,7 @@ function generateFromJson(
         fieldName,
         readSnippet(`object.${fieldName}`)
       );
-    } 
-    else {
+    } else {
       func = func.addStatement(`message.%L = %L`, fieldName, readSnippet(`object.${fieldName}`));
     }
 
